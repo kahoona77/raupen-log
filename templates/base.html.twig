@@ -27,14 +27,16 @@
 
         <div class="nav-bar">
             <div class="nav-main">Raupen Log</div>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <div class="nav-right">
-                <span>Jonny</span>
-                <span class="icon small">
+                <a href="{{ path('app_logout') }}" class="icon small">
+                    <span>{{ app.user.displayName }}</span>
                     <svg>
                         <use xlink:href="{{ asset('images/solid.svg#sign-out-alt') }}"></use>
                     </svg>
-                </span>
+                </a>
             </div>
+            {% endif %}
         </div>
 
         <div class="content">

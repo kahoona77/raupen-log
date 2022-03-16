@@ -32,6 +32,10 @@ a {
   text-align: center;
 }
 
+.text-right {
+  text-align: right;
+}
+
 button {
   background: none;
   border: none;
@@ -41,23 +45,24 @@ button {
   border: $blue solid 1px;
   color: $blue;
   background-color: white;
-  border-radius: 20px;
+  border-radius: 2px;
   margin: 0.4rem;
   padding: 0.3rem;
   min-width: 120px;
   font-size: 18px;
   text-align: center;
-}
-.btn.primary {
-  background-color: $blue;
-  color: white;
-}
+  cursor: pointer;
 
-.btn.small {
-  min-width: 80px;
-  font-size: 14px;
-}
+  &.primary {
+    background-color: $blue;
+    color: white;
+  }
 
+  &.small {
+    min-width: 80px;
+    font-size: 14px;
+  }
+}
 
 .flab {
   position: absolute;
@@ -99,6 +104,15 @@ form input[type="file"] {
 
 form .control {
   margin: 0.5rem 0;
+}
+
+.error {
+  margin: 1rem 0;
+  padding: .5rem;
+  color: $grey-darker;
+  background-color: $red-light;
+  border: 1px solid $red;
+  border-radius: 4px;
 }
 
 .trix-button-group--file-tools { display: none !important; }
