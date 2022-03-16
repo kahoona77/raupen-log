@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="posts">
+        {% for post in posts %}
+            <div class="post">
+                <div class="title">
+                    <div>{{ post.Title }}</div>
+                    <div class="subtitle">
+                        by Jonny (21.03.2022 14:53 Uhr)
+                    </div>
+                </div>
+                <div class="body">
+                    <div class="text">{{ post.Body|raw }}</div>
+                    <div class="files">
+                        <h4>Downloads</h4>
+                        <div>
+                            <a href="#">
+                                <span class="icon small">
+                                    <svg>
+                                        <use xlink:href="{{ asset('images/regular.svg#file') }}"></use>
+                                    </svg>
+                                </span>
+                                mod1.jar (2.3 MB)
+                            </a>
+                        </div>
+                        <div>
+                            <a href="#">
+                                <span class="icon small">
+                                    <svg>
+                                        <use xlink:href="{{ asset('images/regular.svg#file') }}"></use>
+                                    </svg>
+                                </span>
+                                mod1.jar (2.3 MB)
+                            </a>
+                        </div>
+                        <div>
+                            <a href="#">
+                                <span class="icon smaller">
+                                    <svg>
+                                        <use xlink:href="{{ asset('images/regular.svg#file') }}"></use>
+                                    </svg>
+                                </span>
+                                mod1.jar (2.3 MB)
+                            </a>
+                        </div>
+                        <div>
+                            <a href="#">
+                                <span class="icon small">
+                                    <svg>
+                                        <use xlink:href="{{ asset('images/regular.svg#file') }}"></use>
+                                    </svg>
+                                </span>
+                                mod1.jar (2.3 MB)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+
+    </div>
+{% endblock %}
+
+
+
