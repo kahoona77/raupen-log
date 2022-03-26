@@ -7,8 +7,15 @@
 ARG PHP_VERSION=8.1
 ARG CADDY_VERSION=2
 
+FROM node:lts AS node
+WORKDIR /build
+COPY ./assets ./assets
+COPY ./package.json ./package-lock.json ./webpack.config.js ./
+RUN npm install
+RUN npm run build
+
 # "php" stage
-FROM php:${PHP_VERSION}-fpm-alpine AS symfony_php
+FROM php:${PHP_VERSION}-fpm-alpine AS symfony_php_caddy
 
 # persistent / runtime deps
 RUN apk add --no-cache \
@@ -17,6 +24,7 @@ RUN apk add --no-cache \
 		file \
 		gettext \
 		git \
+		caddy \
 	;
 
 ARG APCU_VERSION=5.1.21
@@ -52,56 +60,39 @@ RUN set -eux; \
 	\
 	apk del .build-deps
 
-COPY docker/php/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
-RUN chmod +x /usr/local/bin/docker-healthcheck
-
-HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
 
 RUN ln -s $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 COPY docker/php/conf.d/symfony.prod.ini $PHP_INI_DIR/conf.d/symfony.ini
 
 COPY docker/php/php-fpm.d/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 
-COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-RUN chmod +x /usr/local/bin/docker-entrypoint
-
 VOLUME /var/run/php
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
 ENV COMPOSER_ALLOW_SUPERUSER=1
-
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
+
+COPY docker/caddy/Caddyfile /etc/caddy/Caddyfile
+EXPOSE 80
+
+COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
 
 WORKDIR /srv/app
 
-# Allow to choose skeleton
-ARG SKELETON="symfony/skeleton"
-ENV SKELETON ${SKELETON}
-
-# Allow to use development versions of Symfony
-ARG STABILITY="stable"
-ENV STABILITY ${STABILITY}
-
-# Allow to select skeleton version
-ARG SYMFONY_VERSION=""
-ENV SYMFONY_VERSION ${SYMFONY_VERSION}
-
-# Download the Symfony skeleton and leverage Docker cache layers
-RUN composer create-project "${SKELETON} ${SYMFONY_VERSION}" . --stability=$STABILITY --prefer-dist --no-dev --no-progress --no-interaction; \
-	composer clear-cache
-
-###> recipes ###
-###> doctrine/doctrine-bundle ###
-RUN apk add --no-cache --virtual .pgsql-deps postgresql-dev; \
-	docker-php-ext-install -j$(nproc) pdo_pgsql; \
-	apk add --no-cache --virtual .pgsql-rundeps so:libpq.so.5; \
-	apk del .pgsql-deps
-###< doctrine/doctrine-bundle ###
-###< recipes ###
-
-COPY . .
+COPY ./bin ./bin
+COPY ./config ./config
+COPY ./migrations ./migrations
+COPY ./public ./public
+COPY --from=node /build/public/build public/build
+COPY ./src ./src
+COPY ./templates ./templates
+COPY ./translations ./translations
+COPY ./.env ./.env
+COPY ./composer.json ./composer.json
+COPY ./composer.lock ./composer.lock
+COPY ./symfony.lock ./symfony.lock
 
 RUN set -eux; \
 	mkdir -p var/cache var/log; \
@@ -113,21 +104,4 @@ RUN set -eux; \
 VOLUME /srv/app/var
 
 ENTRYPOINT ["docker-entrypoint"]
-CMD ["php-fpm"]
-
-FROM caddy:${CADDY_VERSION}-builder-alpine AS symfony_caddy_builder
-
-RUN xcaddy build \
-	--with github.com/dunglas/mercure \
-	--with github.com/dunglas/mercure/caddy \
-	--with github.com/dunglas/vulcain \
-	--with github.com/dunglas/vulcain/caddy
-
-FROM caddy:${CADDY_VERSION} AS symfony_caddy
-
-WORKDIR /srv/app
-
-COPY --from=dunglas/mercure:v0.11 /srv/public /srv/mercure-assets/
-COPY --from=symfony_caddy_builder /usr/bin/caddy /usr/bin/caddy
-COPY --from=symfony_php /srv/app/public public/
-COPY docker/caddy/Caddyfile /etc/caddy/Caddyfile
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
