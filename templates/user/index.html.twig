@@ -3,16 +3,24 @@
 {% block title %}User index{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
+    <div class="columns">
+        <div class="column">
+            <h1>Benutzer</h1>
+        </div>
+        <div class="column">
+            <a class="button is-primary is-pulled-right" href="{{ path('app_user_edit', {'id': 0}) }}">Neuer Benutzer</a>
+        </div>
+
+    </div>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Username</th>
-                <th>Roles</th>
-                <th>DisplayName</th>
-                <th>actions</th>
+                <th>Benutzername</th>
+                <th>Rollen</th>
+                <th>Anzeigename</th>
+                <th class="has-text-centered">Bearbeiten</th>
             </tr>
         </thead>
         <tbody>
@@ -20,11 +28,10 @@
             <tr>
                 <td>{{ user.id }}</td>
                 <td>{{ user.username }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                <td>{{ user.roles ? user.roles|join(', ') : '' }}</td>
                 <td>{{ user.DisplayName }}</td>
-                <td>
-                    <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+                <td class="has-text-centered">
+                    <a class="button is-small" href="{{ path('app_user_edit', {'id': user.id}) }}">bearbeiten</a>
                 </td>
             </tr>
         {% else %}
@@ -35,5 +42,4 @@
         </tbody>
     </table>
 
-    <a class="btn primary" href="{{ path('app_user_new') }}">Create new</a>
 {% endblock %}

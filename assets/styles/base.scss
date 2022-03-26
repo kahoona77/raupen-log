@@ -36,75 +36,6 @@ a {
   text-align: right;
 }
 
-button {
-  background: none;
-  border: none;
-}
-
-.btn {
-  border: $blue solid 1px;
-  color: $blue;
-  background-color: white;
-  border-radius: 2px;
-  margin: 0.4rem;
-  padding: 0.3rem;
-  min-width: 120px;
-  font-size: 18px;
-  text-align: center;
-  cursor: pointer;
-
-  &.primary {
-    background-color: $blue;
-    color: white;
-  }
-
-  &.small {
-    min-width: 80px;
-    font-size: 14px;
-  }
-}
-
-.flab {
-  position: absolute;
-  bottom: 55px;
-  right: 15px;
-  height: 40px;
-  width: 40px;
-  border-radius: 25px;
-  padding: 8px;
-  background-color: $red;
-}
-.flab svg {
-  fill: white;
-  width: 24px;
-  height: 24px;
-}
-
-form label {
-  display: block;
-}
-
-form input {
-  display: block;
-  width: 100%;
-  height: 32px;
-  margin: 0.2rem 0;
-  padding: 0 0.2rem;
-  font-family: "Lexend Deca", sans-serif;
-  font-size: 16px;
-  font-weight: 100;
-  border: #4a4a4a solid 1px;
-  color: #4a4a4a;
-}
-
-form input[type="file"] {
-  border: none;
-  display: inline;
-}
-
-form .control {
-  margin: 0.5rem 0;
-}
 
 .error {
   margin: 1rem 0;
@@ -124,6 +55,7 @@ form .control {
     fill: $grey-dark;
     height: 24px;
     width: 24px;
+    margin: 0 .25rem;
     vertical-align: text-bottom;
   }
 
@@ -193,7 +125,7 @@ form .control {
   margin: 0;
   padding: 0 2rem;
   height: 3rem;
-  background-color: $primary;
+  background-color: $green-dark;
   color: white;
   display: flex;
   align-items: center;
@@ -209,7 +141,9 @@ form .control {
   }
 
   .nav-right {
-
+    a {
+      width: auto;
+    }
   }
 }
 

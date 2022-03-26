@@ -21,50 +21,45 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, UserRepository $userRepository): Response
+    #[Route('/{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, int $id, UserRepository $userRepository): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+        if ($id > 0) {
+            $user = $userRepository->find($id);
+        }
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($request->getMethod() == "POST") {
+            $user->setUsername($request->request->get("username"));
+            $user->setDisplayName($request->request->get("display-name"));
+
+            if (!$user->getId()) {
+                // new user set password
+                $password = $request->request->get("password");
+                $passwordRepeat = $request->request->get("password-repeat");
+
+                if ($password != $passwordRepeat) {
+                    return $this->render('user/edit.html.twig', [
+                        'user' => $user,
+                        'error' => "Die Passwörter sind nicht gleich!",
+                    ]);
+                }
+
+                $hashedPassword = $userRepository->hashPassword($user, $password);
+                $user->setPassword($hashedPassword);
+            }
+
+
             $userRepository->add($user);
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('user/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(User $user): Response
-    {
-        return $this->render('user/show.html.twig', [
+        return $this->render('user/edit.html.twig', [
             'user' => $user,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, UserRepository $userRepository): Response
-    {
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $userRepository->add($user);
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('user/edit.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'app_user_delete', methods: ['POST'] )]
     public function delete(Request $request, User $user, UserRepository $userRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {

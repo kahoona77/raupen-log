@@ -3,11 +3,65 @@
 {% block title %}Edit User{% endblock %}
 
 {% block body %}
-    <h1>Edit User</h1>
+    {% if user.id %}
+        <h1>Benutzer bearbeiten</h1>
+    {% else %}
+        <h1>neuen Benutzer erstellen</h1>
+    {% endif %}
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+    <form class="form block" id="edit-form" action="{{ path('app_user_edit', {'id': user.id ?: 0 }) }}" method="post">
+        <div class="field">
+            <label class="label">Username</label>
+            <div class="control">
+                <input name="username" required="required" class="input" type="text" placeholder="Username" value="{{ user.username }}">
+            </div>
+        </div>
 
-    <a href="{{ path('app_user_index') }}">back to list</a>
+        <div class="field">
+            <label class="label">Anzeigename</label>
+            <div class="control">
+                <input name="display-name" required="required" class="input" type="text" placeholder="Anzeigename" value="{{ user.displayName }}">
+            </div>
+        </div>
 
-    {{ include('user/_delete_form.html.twig') }}
+        {% if not user.id %}
+            <div class="field">
+                <label class="label">Passwort</label>
+                <div class="control">
+                    <input name="password" required="required" minlength="4" class="input" type="password" placeholder="Passwort">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Passwort wiederholen</label>
+                <div class="control">
+                    <input name="password-repeat" required="required" minlength="4" class="input" type="password" placeholder="Passwort wiederholen">
+                </div>
+            </div>
+        {% endif %}
+
+        {% if error is defined %}
+            <div class="notification is-danger">
+                {{ error }}
+            </div>
+        {%  endif %}
+
+    </form>
+
+    <div class="block">
+        <a class="button" href="{{ path('app_user_index') }}">Abbrechen</a>
+        {% if user.id %}
+            <form hidden="hidden" id="delete-form" method="post" action="{{ path('app_user_delete', {'id': user.id}) }}"
+                  onsubmit="return confirm('Soll der Benutzer \'{{ user.username }}\' wirklich gelöscht werden?');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+
+            </form>
+            <button type="submit" form="delete-form" class="button">Löschen</button>
+        {% endif %}
+
+        <button type="submit" form="edit-form" class="button is-primary is-pulled-right" >Speichern</button>
+    </div>
+
+
+
 {% endblock %}

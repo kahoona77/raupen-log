@@ -6,15 +6,24 @@
             <div class="error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
-        <form action="{{ path('app_login') }}" method="post">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="_username" value="{{ last_username }}"/>
+        <form class="form" action="{{ path('app_login') }}" method="post">
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="_password"/>
+            <div class="field">
+                <label class="label">Benutzername:</label>
+                <div class="control">
+                    <input class="input" type="text" placeholder="Benutzername" id="username" name="_username" value="{{ last_username }}">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Passwort:</label>
+                <div class="control">
+                    <input class="input" type="password" placeholder="Benutzername" id="password" name="_password">
+                </div>
+            </div>
 
             <div class="text-right">
-                <button class="btn primary" type="submit">Login</button>
+                <button class="button is-primary" type="submit">Login</button>
             </div>
 
         </form>

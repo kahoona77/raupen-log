@@ -9,6 +9,9 @@
         "sass": "^1.49.9",
         "sass-loader": "^12.6.0"
     },
+    "dependencies": {
+        "bulma": "^0.9.3"
+    },
     "license": "UNLICENSED",
     "private": true,
     "scripts": {

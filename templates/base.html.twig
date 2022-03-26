@@ -29,6 +29,7 @@
             <div class="nav-main">Raupen Log</div>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <div class="nav-right">
+
                 <a href="{{ path('app_logout') }}" class="icon small">
                     <span>{{ app.user.displayName }}</span>
                     <svg>
