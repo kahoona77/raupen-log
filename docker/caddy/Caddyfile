@@ -7,7 +7,7 @@
 }
 
 :80 {
-    handle {$DEFAULT_PATH}/* {
+    handle {
         root * /srv/app/public
         push
         php_fastcgi unix//var/run/php/php-fpm.sock
