@@ -1,7 +1,6 @@
 controllers:
     resource: ../src/Controller/
     type: annotation
-    prefix: '%default_path%'
 
 
 kernel:

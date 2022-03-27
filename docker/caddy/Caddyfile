@@ -1,17 +1,23 @@
 {
     auto_https off
+    log
+
     # Debug
     {$DEBUG}
 }
 
-:80
+:80 {
+    handle {$DEFAULT_PATH}/* {
+        root * /srv/app/public
+        push
+        php_fastcgi unix//var/run/php/php-fpm.sock
+        encode zstd gzip
+        file_server
+    }
 
-log
+    handle {
+		# Fallback for any otherwise unhandled requests, maybe a 404 if you want
+		respond "Nope!" 404
+	}
 
-route {$DEFAULT_PATH}/* {
-    root * /srv/app/public
-    push
-    php_fastcgi unix//var/run/php/php-fpm.sock
-    encode zstd gzip
-    file_server
 }

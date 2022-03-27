@@ -10,3 +10,4 @@ services:
     environment:
       APP_ENV: dev
       DATABASE_URL: sqlite:////srv/app/var/app.db
+      DEFAULT_PATH: /raupen-log
