@@ -1,12 +1,12 @@
 {
     auto_https off
-    log
-
     # Debug
     {$DEBUG}
 }
 
 :80 {
+    log
+
     handle {
         root * /srv/app/public
         push
@@ -14,10 +14,4 @@
         encode zstd gzip
         file_server
     }
-
-    handle {
-		# Fallback for any otherwise unhandled requests, maybe a 404 if you want
-		respond "Nope!" 404
-	}
-
 }
