@@ -8,7 +8,7 @@
 
 log
 
-route {
+route {$DEFAULT_PATH}/* {
     root * /srv/app/public
     push
     php_fastcgi unix//var/run/php/php-fpm.sock
