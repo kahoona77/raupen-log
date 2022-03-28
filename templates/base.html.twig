@@ -25,20 +25,60 @@
     </head>
     <body>
 
-        <div class="nav-bar">
-            <div class="nav-main">Raupen Log</div>
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <div class="nav-right">
+    <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="{{ path('app_home') }}">
+                Raupen Log
+            </a>
 
-                <a href="{{ path('app_logout') }}" class="icon small">
-                    <span>{{ app.user.displayName }}</span>
-                    <svg>
-                        <use xlink:href="{{ asset('images/solid.svg#sign-out-alt') }}"></use>
-                    </svg>
-                </a>
-            </div>
-            {% endif %}
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar-menu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
         </div>
+
+        <div id="navbar-menu" class="navbar-menu">
+            <div class="navbar-start">
+                {% if is_granted('ROLE_ADMIN') %}
+                <a class="navbar-item" href="{{ path('app_user_index') }}">
+                    Benutzer
+                </a>
+                {% endif %}
+            </div>
+
+            <div class="navbar-end">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a class="navbar-item" href="{{ path('app_logout') }}" >
+                    {{ app.user.displayName }}
+                    <span class="icon is-small">
+                        <svg>
+                            <use xlink:href="{{ asset('images/solid.svg#sign-out-alt') }}"></use>
+                        </svg>
+                    </span>
+
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+
+
+{#        <div class="nav-bar">#}
+{#            <div class="nav-main">Raupen Log</div>#}
+{#            {% if is_granted('IS_AUTHENTICATED_FULLY') %}#}
+{#            <div class="nav-right">#}
+
+{#                <a href="{{ path('app_logout') }}" class="icon small">#}
+{#                    <span>{{ app.user.displayName }}</span>#}
+{#                    <svg>#}
+{#                        <use xlink:href="{{ asset('images/solid.svg#sign-out-alt') }}"></use>#}
+{#                    </svg>#}
+{#                </a>#}
+{#            </div>#}
+{#            {% endif %}#}
+{#        </div>#}
         <div class="content">
             {% block body %}{% endblock %}
         </div>

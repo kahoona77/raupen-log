@@ -28,123 +28,47 @@ a {
   color: unset;
 }
 
-.centered {
-  text-align: center;
-}
-
-.text-right {
-  text-align: right;
-}
-
-
-.error {
-  margin: 1rem 0;
-  padding: .5rem;
-  color: $grey-darker;
-  background-color: $red-light;
-  border: 1px solid $red;
-  border-radius: 4px;
-}
 
 .trix-button-group--file-tools { display: none !important; }
 
 .icon {
-  height: 24px;
-
+  margin: 0 .25rem;
   svg {
     fill: $grey-dark;
-    height: 24px;
-    width: 24px;
-    margin: 0 .25rem;
-    vertical-align: text-bottom;
-  }
-
-  &.small {
-    height: 20px;
-
-    svg {
-      height: 20px;
-      width: 20px;
-    }
-  }
-
-  &.smaller {
-    height: 18px;
-
-    svg {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  &.big {
-    height: 32px;
-
-    svg {
-      height: 32px;
-      width: 32px;
-    }
+    height: 16px;
   }
 }
 
-.card {
-  display: block;
-  position: relative;
-}
-
-.card-1 {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.card-1:hover {
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-}
-
-.card-2 {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-}
-
-.card-3 {
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-}
-
-.card-4 {
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-}
-
-.card-5 {
-  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
-}
-
-.nav-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  margin: 0;
-  padding: 0 2rem;
-  height: 3rem;
+.navbar {
   background-color: $green-dark;
   color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 
-  & > * svg {
-    fill: white;
-  }
-
-  .nav-main{
-    margin: 0 2rem;
-    font-size: 24px;
-  }
-
-  .nav-right {
-    a {
-      width: auto;
+  .navbar-brand {
+    font-size: 16pt;
+    margin-left: 3rem;
+    a:hover {
+      color: white;
     }
   }
+
+  .navbar-item {
+    color: white;
+
+    .icon {
+      margin: 0 .25rem;
+      svg {
+        fill: white;
+      }
+    }
+
+    &:hover {
+      .icon svg {
+        fill: $grey-dark;
+      }
+    }
+  }
+
+
 }
 
 .content {

@@ -74,6 +74,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         );
     }
 
+    public function getAllRoles(): array {
+        return ['ROLE_USER', 'ROLE_ADMIN'];
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

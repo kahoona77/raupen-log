@@ -24,6 +24,16 @@
             </div>
         </div>
 
+        <div class="field">
+            <label class="label">Admin</label>
+            <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox" name="is-admin" {% if user.admin %} checked="checked" {% endif %}>
+                    Ist Admin
+                </label>
+            </div>
+        </div>
+
         {% if not user.id %}
             <div class="field">
                 <label class="label">Passwort</label>

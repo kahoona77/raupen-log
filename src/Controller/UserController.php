@@ -33,6 +33,9 @@ class UserController extends AbstractController
             $user->setUsername($request->request->get("username"));
             $user->setDisplayName($request->request->get("display-name"));
 
+            $isAdmin = $request->request->get("is-admin");
+            $user->setAdmin($isAdmin === "on");
+
             if (!$user->getId()) {
                 // new user set password
                 $password = $request->request->get("password");

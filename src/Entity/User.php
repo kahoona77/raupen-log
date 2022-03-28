@@ -100,6 +100,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function setAdmin(bool $isAdmin): self
+    {
+        if ($isAdmin && !$this->isAdmin()) {
+            $this->roles[] = "ROLE_ADMIN";
+        } elseif (!$isAdmin) {
+            $this->roles = array_diff($this->roles, array('ROLE_ADMIN'));
+        }
+
+        return $this;
+    }
+
+    public function isAdmin(): bool
+    {
+        return in_array("ROLE_ADMIN", $this->roles, true);
+    }
+
     /**
      * @see UserInterface
      */

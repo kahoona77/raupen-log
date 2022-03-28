@@ -18,7 +18,7 @@
             <tr>
                 <th>Id</th>
                 <th>Benutzername</th>
-                <th>Rollen</th>
+                <th class="has-text-centered">Admin</th>
                 <th>Anzeigename</th>
                 <th class="has-text-centered">Bearbeiten</th>
             </tr>
@@ -28,7 +28,15 @@
             <tr>
                 <td>{{ user.id }}</td>
                 <td>{{ user.username }}</td>
-                <td>{{ user.roles ? user.roles|join(', ') : '' }}</td>
+                <td class="has-text-centered">
+                    <span class="icon is-small"><svg>
+                    {% if user.admin %}
+                        <use xlink:href="{{ asset('images/regular.svg#check-square') }}"></use>
+                    {% else %}
+                        <use xlink:href="{{ asset('images/regular.svg#square') }}"></use>
+                    {% endif %}
+                    </svg></span>
+                </td>
                 <td>{{ user.DisplayName }}</td>
                 <td class="has-text-centered">
                     <a class="button is-small" href="{{ path('app_user_edit', {'id': user.id}) }}">bearbeiten</a>
