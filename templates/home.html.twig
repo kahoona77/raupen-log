@@ -27,46 +27,18 @@
                     <div class="text">{{ post.Body|raw }}</div>
                     <div class="files">
                         <h4>Downloads</h4>
+                        {% for file in post.files %}
                         <div>
-                            <a href="#">
+                            <a href="{{ path('app_post_download-file', {'id': post.id, fileId: file.id}) }}">
                                 <span class="icon small">
                                     <svg>
                                         <use xlink:href="{{ asset('images/regular.svg#file') }}"></use>
                                     </svg>
                                 </span>
-                                mod1.jar (2.3 MB)
+                                {{ file.name }} ({{ file.size|readable_filesize(0) }})
                             </a>
                         </div>
-                        <div>
-                            <a href="#">
-                                <span class="icon small">
-                                    <svg>
-                                        <use xlink:href="{{ asset('images/regular.svg#file') }}"></use>
-                                    </svg>
-                                </span>
-                                mod1.jar (2.3 MB)
-                            </a>
-                        </div>
-                        <div>
-                            <a href="#">
-                                <span class="icon smaller">
-                                    <svg>
-                                        <use xlink:href="{{ asset('images/regular.svg#file') }}"></use>
-                                    </svg>
-                                </span>
-                                mod1.jar (2.3 MB)
-                            </a>
-                        </div>
-                        <div>
-                            <a href="#">
-                                <span class="icon small">
-                                    <svg>
-                                        <use xlink:href="{{ asset('images/regular.svg#file') }}"></use>
-                                    </svg>
-                                </span>
-                                mod1.jar (2.3 MB)
-                            </a>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

@@ -34,6 +34,57 @@
 
     </form>
 
+    {% if post.id %}
+        <label class="label">Uploads</label>
+        <ul>
+            {% for file in post.files %}
+            <li>
+                {{ file.name }}
+                <form hidden="hidden" id="delete-upload-form-{{ file.id }}" method="post" action="{{ path('app_post_delete-file', {'id': post.id, fileId: file.id}) }}"
+                      onsubmit="return confirm('Soll der Upload \'{{ file.name }}\' wirklich gelöscht werden?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete-file' ~ file.id) }}">
+                </form>
+                <button class="button is-small" type="submit" form="delete-upload-form-{{ file.id }}">
+                    <span class="icon is-small">
+                      <svg>
+                        <use xlink:href="{{ asset('images/solid.svg#trash') }}"></use>
+                      </svg>
+                    </span>
+                </button>
+
+{#                <a href="{{ path('app_post_delete-file', {'id': post.id, fileId: file.id}) }}" class="icon is-small">#}
+{#                    <svg>#}
+{#                        <use xlink:href="{{ asset('images/solid.svg#trash') }}"></use>#}
+{#                    </svg>#}
+{#                </a>#}
+            </li>
+            {% endfor %}
+        </ul>
+
+        <form class="form block" id="upload-form" action="{{ path('app_post_upload', {'id': post.id}) }}" method="post" enctype="multipart/form-data">
+            <div id="file-upload" class="file has-name">
+                <label class="file-label">
+                    <input class="file-input" type="file" name="upload">
+                    <span class="file-cta">
+                      <span class="file-icon">
+                        <svg>
+                            <use xlink:href="{{ asset('images/solid.svg#upload') }}"></use>
+                        </svg>
+                      </span>
+                      <span class="file-label">
+                        Datei wählen
+                      </span>
+                    </span>
+                    <span class="file-name">
+                      Bitte wählen...
+                    </span>
+                </label>
+                <button type="submit" form="upload-form" class="button">Hochladen</button>
+            </div>
+
+        </form>
+    {% endif %}
+
     <div class="block">
         <a class="button" href="{{ path('app_user_index') }}">Abbrechen</a>
         {% if post.id %}
@@ -47,5 +98,15 @@
 
         <button type="submit" form="edit-form" class="button is-primary is-pulled-right">Speichern</button>
     </div>
+
+    <script>
+        const fileInput = document.querySelector('#file-upload input[type=file]');
+        fileInput.onchange = () => {
+            if (fileInput.files.length > 0) {
+                const fileName = document.querySelector('#file-upload .file-name');
+                fileName.textContent = fileInput.files[0].name;
+            }
+        }
+    </script>
 
 {% endblock %}
