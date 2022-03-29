@@ -1,13 +1,26 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <div class="is-pulled-right">
+        <a class="button is-primary" href="{{ path('app_post_edit', {'id': 0}) }}">neuen Beitrag erstellen</a>
+    </div>
+
     <div class="posts">
         {% for post in posts %}
             <div class="post">
                 <div class="title">
-                    <div>{{ post.Title }}</div>
+                    <div>
+                        {{ post.Title }}
+                        {% if (app.user.id == post.user.id) %}
+                            <a href="{{ path('app_post_edit', {'id': post.id}) }}" class="icon is-medium">
+                                <svg>
+                                        <use xlink:href="{{ asset('images/solid.svg#edit') }}"></use>
+                                    </svg>
+                            </a>
+                        {% endif %}
+                    </div>
                     <div class="subtitle">
-                        by Jonny (21.03.2022 14:53 Uhr)
+                        von {{ post.user.displayName }} ({{ post.date|date("d.m.Y H:i:s") }} Uhr)
                     </div>
                 </div>
                 <div class="body">

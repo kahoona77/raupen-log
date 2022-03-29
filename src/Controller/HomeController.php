@@ -16,7 +16,7 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function home(PostRepository $postRepository): Response
     {
-        $posts = $postRepository->findAll();
+        $posts = $postRepository->findBy([], ['date' => 'DESC']);
 
         return $this->render('home.html.twig', [
             'posts' => $posts

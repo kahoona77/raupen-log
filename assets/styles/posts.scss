@@ -2,6 +2,10 @@
 
 .posts {
   .post {
+
+    border-bottom: solid 1px $grey-light;
+    margin: 2rem 0;
+
     .title {
       font-size: 2rem;
       font-weight: bold;
@@ -19,6 +23,10 @@
 
       .text {
         flex: 1;
+
+        h1 {
+          font-size: 18px;
+        }
       }
 
       .files {

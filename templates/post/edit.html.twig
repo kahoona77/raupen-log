@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post{% endblock %}
+
+{% block body %}
+    {% if post.id %}
+        <h1>Beitrag bearbeiten</h1>
+    {% else %}
+        <h1>neuen Beitrag erstellen</h1>
+    {% endif %}
+
+    <form class="form block" id="edit-form" action="{{ path('app_post_edit', {'id': post.id ?: 0 }) }}" method="post">
+        <div class="field">
+            <label class="label">Titel</label>
+            <div class="control">
+                <input name="title" required="required" class="input" type="text" placeholder="Titel"
+                       value="{{ post.title }}">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Text</label>
+            <div class="control">
+                <input id="body" value="{{ post.body }}" type="hidden" name="body">
+                <trix-editor input="body"></trix-editor>
+            </div>
+        </div>
+
+        {% if error is defined %}
+            <div class="notification is-danger">
+                {{ error }}
+            </div>
+        {% endif %}
+
+    </form>
+
+    <div class="block">
+        <a class="button" href="{{ path('app_user_index') }}">Abbrechen</a>
+        {% if post.id %}
+            <form hidden="hidden" id="delete-form" method="post" action="{{ path('app_post_delete', {'id': post.id}) }}"
+                  onsubmit="return confirm('Soll der Beitrag \'{{ post.title }}\' wirklich gelöscht werden?');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
+
+            </form>
+            <button type="submit" form="delete-form" class="button">Löschen</button>
+        {% endif %}
+
+        <button type="submit" form="edit-form" class="button is-primary is-pulled-right">Speichern</button>
+    </div>
+
+{% endblock %}
